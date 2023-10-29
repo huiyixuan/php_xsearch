@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use Elastic\Elasticsearch\Client;
 use Illuminate\Console\Command;
 use Simps\MQTT\Protocol\Types;
 use Simps\MQTT\Protocol\V5;

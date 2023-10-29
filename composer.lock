@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a2c3b0fb127a1b6e3eef912762ce7c3b",
+    "content-hash": "58bb20dc0cfc7224ab34fb91c029e9d4",
     "packages": [
         {
             "name": "brick/math",
@@ -5993,6 +5993,57 @@
                 "source": "https://github.com/webmozarts/assert/tree/1.11.0"
             },
             "time": "2022-06-03T18:03:27+00:00"
+        },
+        {
+            "name": "zjkal/time-helper",
+            "version": "v1.1.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zjkal/time-helper.git",
+                "reference": "202e6876414aa9393ebe05ecca1f402a6e259c51"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zjkal/time-helper/zipball/202e6876414aa9393ebe05ecca1f402a6e259c51",
+                "reference": "202e6876414aa9393ebe05ecca1f402a6e259c51",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "@stable"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "zjkal\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "zjkal",
+                    "email": "zjkal@qq.com"
+                }
+            ],
+            "description": "一个简单快捷的PHP日期时间助手类库。 a smart PHP datetime helper library.",
+            "keywords": [
+                "date",
+                "datetime",
+                "helper",
+                "php",
+                "time",
+                "zjkal"
+            ],
+            "support": {
+                "issues": "https://github.com/zjkal/time-helper/issues",
+                "source": "https://github.com/zjkal/time-helper/tree/v1.1.4"
+            },
+            "time": "2023-10-25T03:42:01+00:00"
         }
     ],
     "packages-dev": [
@@ -8491,7 +8542,8 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": "^8.1"
+        "php": "^8.1",
+        "ext-json": "*"
     },
     "platform-dev": [],
     "plugin-api-version": "2.2.0"
