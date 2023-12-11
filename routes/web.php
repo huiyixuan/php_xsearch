@@ -16,3 +16,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::any('demo',  [\App\Http\Controllers\SearchController::class, 'demo']);
+Route::any('search',  [\App\Http\Controllers\SearchController::class, 'search']);
