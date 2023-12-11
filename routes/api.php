@@ -17,3 +17,9 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+
+Route::get('/search', function (Request $request) {
+    $header = $request->header();
+    return json_encode($header, JSON_UNESCAPED_UNICODE);
+});
