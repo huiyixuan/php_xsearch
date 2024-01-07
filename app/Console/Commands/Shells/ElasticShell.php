@@ -41,13 +41,13 @@ class ElasticShell extends Command
      */
     public function handle()
     {
-        // $index = 'test1';
-        // $this->putMapping($index);
-        // $this->insertDoc($index);
-        // $this->searchDoc($index);
-        // $this->createIndex($index);
-        // $this->getIndex($index);
+        $index = 'poetry';
         // $this->deleteIndex($index);
+        $this->createIndex($index);
+        // $this->putMapping($index);
+        $this->insertDoc($index);
+        // $this->searchDoc($index);
+        // $this->getIndex($index);
     }
 
     public function searchDoc($index)
@@ -62,20 +62,20 @@ class ElasticShell extends Command
 
     protected function insertDoc($index)
     {
-        $params = [
-            'index' => $index,
-            'id' => 0,
-            'body' => [
-                'properties' => [
-                    'field1' => '不到长城非好汉',
-                    'field2' => '滕王高阁临江渚',
-                    'field3' => '佩玉鸣鸾罢歌舞',
-                ]
-            ],
-        ];
 
-        $res = $this->getClient()->create($params);
-        var_dump($res->getBody()->getContents());
+
+        $json = file_get_contents('poetry.json');
+        $dataList = json_decode($json, true);
+        foreach ($dataList as $data) {
+            $params = [
+                'index' => $index,
+                'body' => [
+                    'properties' => $data
+                ],
+            ];
+            $res = $this->getClient()->index($params);
+            var_dump($res->getBody()->getContents());
+        }
 
     }
 
@@ -85,9 +85,10 @@ class ElasticShell extends Command
             'index' => $index,
             'body' => [
                 'properties' => [
-                    'field1' => ['type' => 'keyword'],
-                    'field2' => ['type' => 'keyword'],
-                    'field3' => ['type' => 'keyword'],
+                    'title' => ['type' => 'text'],
+                    'author' => ['type' => 'text'],
+                    'dynasty' => ['type' => 'keyword'],
+                    'poetry' => ['type' => 'text'],
                 ]
             ],
         ];
@@ -127,6 +128,14 @@ class ElasticShell extends Command
                     'number_of_shards' => 1,
                     'number_of_replicas' => 0,
                 ],
+                'mappings' => [
+                    'properties' => [
+                        'dynasty' => ['type' => 'keyword'],
+                        'title' => ['type' => 'text'],
+                        'author' => ['type' => 'text'],
+                        'poetry' => ['type' => 'text'],
+                    ]
+                ]
             ]
         ];
         $res = $this->getClient()->indices()->create($params);
