@@ -2,6 +2,8 @@
 
 namespace App\Console\Commands\Shells;
 
+use App\Common\Utils\PhpExcel;
+use App\Models\JogRecordModel;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Redis;
 
@@ -12,7 +14,7 @@ class ConnectTestShell extends Command
      *
      * @var string
      */
-    protected $signature = 'ConnectTestShell';
+    protected $signature = 't';
 
     /**
      * The console command description.
@@ -32,11 +34,20 @@ class ConnectTestShell extends Command
 
     protected function testRedis()
     {
-        $res = 'available';
-        $config = config('database.redis');
-        $res = Redis::command('set', ['key', 'val']);
-        var_dump($res);
-        exit;
-        echo "redis server " . $res . PHP_EOL;
+        $phpExcel = new PhpExcel();
+        $dir = app()->basePath() . '/storage/uploads/';
+        $files = scandir($dir);
+        foreach ($files as $file) {
+            if (in_array($file, ['.','..'])) {
+                continue;
+            }
+
+            if (false !== mb_strpos($file, '运动')){
+                $filename = $dir . $file;
+                $dataList = $phpExcel->getSheetContent($filename);
+                JogRecordModel::insert($dataList);
+            }
+
+        }
     }
 }

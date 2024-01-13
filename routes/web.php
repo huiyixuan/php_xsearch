@@ -14,8 +14,22 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return '<h3>hello, ' . get_client_ip() . '</h3>';
 });
 
-Route::any('demo',  [\App\Http\Controllers\SearchController::class, 'demo']);
-Route::any('search',  [\App\Http\Controllers\SearchController::class, 'search']);
+Route::get('ping', function () {
+    return json_encode([
+        "code" => 200,
+        "msg" => "pong",
+        "data" => json_decode('{}'),
+    ], JSON_UNESCAPED_UNICODE);
+});
+
+Route::group(["prefix" => 'stat'], function () {
+    Route::get("jog", '\App\Http\Controllers\Stat\FitStatController@jog');
+});
+
+
+Route::group(["prefix" => 'resource'], function () {
+    Route::post("store", '\App\Http\Controllers\Resource\UploadController@store');
+});

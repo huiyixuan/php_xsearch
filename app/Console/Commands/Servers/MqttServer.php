@@ -14,7 +14,7 @@ class MqttServer extends Command
      *
      * @var string
      */
-    protected $signature = 'app:mqtt-server';
+    protected $signature = 'mqtt';
 
     /**
      * The console command description.
@@ -32,8 +32,11 @@ class MqttServer extends Command
         $server = new \Swoole\Server('0.0.0.0', $port, SWOOLE_BASE);
 
         $server->set([
+            'open_http_protocol' => true,
             'open_mqtt_protocol' => true, // 启用 MQTT 协议
             'worker_num' => 1,
+
+
         ]);
 
         $server->on('Connect', function ($server, $fd) {
@@ -42,6 +45,7 @@ class MqttServer extends Command
 
         $server->on('Receive', function (\Swoole\Server $server, $fd, $reactor_id, $data) {
             $header = mqttGetHeader($data);
+            var_dump($header);
 
             if ($header['type'] == 1) {
                 $resp = chr(32) . chr(2) . chr(0) . chr(0);
@@ -59,6 +63,9 @@ class MqttServer extends Command
                     'message' => 'can you hear me, you just now say ' . $msg,
                 ]);
                 $server->send($fd, $msg);
+            } elseif ($header['type'] == 4) {
+
+
             }
             echo "received length=" . strlen($data) . "\n";
 
