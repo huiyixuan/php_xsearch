@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands\Shells;
 
+use Elastic\Elasticsearch\Exception\AuthenticationException;
 use Illuminate\Console\Command;
 use Elastic\Elasticsearch\ClientBuilder;
 
@@ -22,9 +23,25 @@ class ElasticShell extends Command
      */
     protected $description = 'elastic脚本';
 
-    protected $client;
+    protected \Elastic\Elasticsearch\Client $client;
 
-    public function getClient()
+    /**
+     * Execute the console command.
+     */
+    public function handle(): void
+    {
+        $cmd = $this->choice("select which cmd would you choose", [
+            'createIndex',
+        ], "0");
+        echo "Your choice is:【{$cmd}】\n";
+        call_user_func([$this, $cmd], []);
+    }
+
+
+    /**
+     * @throws AuthenticationException
+     */
+    public function getClient(): \Elastic\Elasticsearch\Client
     {
         if (empty($this->client)) {
             $this->client = ClientBuilder::create()
@@ -36,21 +53,8 @@ class ElasticShell extends Command
         return $this->client;
     }
 
-    /**
-     * Execute the console command.
-     */
-    public function handle()
-    {
-        $index = 'poetry';
-        // $this->deleteIndex($index);
-        $this->createIndex($index);
-        // $this->putMapping($index);
-        $this->insertDoc($index);
-        // $this->searchDoc($index);
-        // $this->getIndex($index);
-    }
 
-    public function searchDoc($index)
+    public function searchDoc($index): void
     {
         $params = [
             'index' => $index,
@@ -60,7 +64,7 @@ class ElasticShell extends Command
         var_dump($data);
     }
 
-    protected function insertDoc($index)
+    protected function insertDoc($index): void
     {
 
 
@@ -79,7 +83,7 @@ class ElasticShell extends Command
 
     }
 
-    protected function putMapping($index)
+    protected function putMapping($index): void
     {
         $params = [
             'index' => $index,
@@ -96,9 +100,10 @@ class ElasticShell extends Command
         var_dump($res->getBody()->getContents());
     }
 
-    protected function getIndex($index)
+
+    protected function getIndex($index): void
     {
-        // 删除索引
+        // 获取索引
         $params = [
             'index' => $index,
         ];
@@ -107,7 +112,8 @@ class ElasticShell extends Command
     }
 
 
-    protected function deleteIndex($index)
+    // 删除索引
+    protected function deleteIndex($index): void
     {
         // 删除索引
         $params = [
@@ -118,8 +124,9 @@ class ElasticShell extends Command
     }
 
     // 创建索引
-    protected function createIndex($index)
+    protected function createIndex($index): void
     {
+        echo 1;die;
         // 创建索引
         $params = [
             'index' => $index,
